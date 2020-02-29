@@ -57,6 +57,9 @@
     <PackageReference Include="Refit">
       <Version>5.0.23</Version>
     </PackageReference>
+    <PackageReference Include="Prism.DryIoc.Forms">
+      <Version>7.2.0.1422</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
