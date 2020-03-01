@@ -21,19 +21,21 @@ using CodeChallenge.Views;
 using CodeChallenge.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Prism.DryIoc;
+using Prism.Ioc;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace CodeChallenge
 {
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
         public static List<Genre> Genres { get; private set; }
 
-        public App()
+        protected override void OnInitialized()
         {
             InitializeComponent();
 
-            MainPage = new HomePage();
+            NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(HomePage)}");
         }
 
         protected override async void OnStart()
@@ -51,5 +53,14 @@ namespace CodeChallenge
         {
             // Handle when your app resumes
         }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<HomePage>();
+            //containerRegistry.RegisterForNavigation<SearchMoviesPage>();
+            containerRegistry.RegisterForNavigation<MovieDetailPage>();
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppDelegate.cs" company="ArcTouch LLC">
-//   Copyright 2019 ArcTouch LLC.
+// <copyright file="CardView.cs" company="ArcTouch LLC">
+//   Copyright 2020 ArcTouch LLC.
 //   All rights reserved.
 //
 //   This file, its contents, concepts, methods, behavior, and operation
@@ -11,32 +11,25 @@
 //   the license agreement.
 // </copyright>
 // <summary>
-//   Defines the AppDelegate type.
+//   Defines the CardView type.
 // </summary>
 //  --------------------------------------------------------------------------------------------------------------------
+using System;
+using Xamarin.Forms;
 
-using FFImageLoading.Forms.Platform;
-using Foundation;
-using PanCardView.iOS;
-using UIKit;
-
-namespace CodeChallenge.iOS
+namespace CodeChallenge.Controls
 {
-    [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public class CardView : Frame
     {
-        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+        public CardView()
         {
-            //Xamarin.Calabash.Start();
-            global::Xamarin.Forms.Forms.Init();
-
-
-            CachedImageRenderer.Init();
-            CardsViewRenderer.Preserve();
-
-            LoadApplication(new App());
-
-            return base.FinishedLaunching(app, options);
+            Padding = 0;
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                HasShadow = false;
+                BorderColor = Color.Transparent;
+                BackgroundColor = Color.White;
+            }
         }
     }
 }

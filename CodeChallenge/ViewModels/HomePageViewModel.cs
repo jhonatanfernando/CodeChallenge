@@ -22,20 +22,37 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CodeChallenge.Models;
 using CodeChallenge.Services;
+using CodeChallenge.Views;
+using Prism.Commands;
+using Prism.Navigation;
+using Xamarin.Forms;
 
 namespace CodeChallenge.ViewModels
 {
-    public class HomePageViewModel : INotifyPropertyChanged
+    public class HomePageViewModel : BaseViewModel
     {
-        private readonly MovieService movieService;
+        // Variables to control of the pagination
+        private int currentPage = 1;
+        private int totalPage = 0;
+
+
+        private readonly MovieService movieService = new MovieService();
         private ObservableCollection<MovieItemViewModel> movies;
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public HomePageViewModel(MovieService movieService)
+        public DelegateCommand<MovieItemViewModel> ShowMovieDetailCommand { get; }
+        public DelegateCommand<MovieItemViewModel> ItemAppearingCommand { get; }
+
+
+        private readonly INavigationService navigationService;
+        public HomePageViewModel(INavigationService navigationService)
         {
-            this.movieService = movieService;
             this.movies = new ObservableCollection<MovieItemViewModel>();
+            this.navigationService = navigationService;
+
+            ShowMovieDetailCommand = new DelegateCommand<MovieItemViewModel>(async (MovieItemViewModel movie) => await ExecuteShowMovieDetailCommand(movie).ConfigureAwait(false));
+            ItemAppearingCommand = new DelegateCommand<MovieItemViewModel>(async (MovieItemViewModel movie) => await ExecuteItemAppearingCommand(movie).ConfigureAwait(false));
+
         }
 
         public ObservableCollection<MovieItemViewModel> Movies
@@ -47,28 +64,52 @@ namespace CodeChallenge.ViewModels
         public async Task OnAppearing()
         {
             UpcomingMoviesResponse upcomingMoviesResponse = await this.movieService.UpcomingMovies(1);
+
+            totalPage = upcomingMoviesResponse.TotalPages;
+
             foreach (var movie in upcomingMoviesResponse.Results)
             {
                 Movies.Add(ToMovieItemViewModel(movie));
+            } 
+        }
+
+        private async Task ExecuteShowMovieDetailCommand(MovieItemViewModel movie)
+        {
+            var parameters = new NavigationParameters
+            {
+                { nameof(movie), movie }
+            };
+
+            await navigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MovieDetailPage)}", parameters).ConfigureAwait(false);
+
+            //await navigationService.NavigateAsync("NavigationPage/MovieDetailPage", parameters).ConfigureAwait(false);
+        }
+
+        private async Task ExecuteItemAppearingCommand(MovieItemViewModel movie)
+        {
+            int itemLoadNextItem = 2;
+            int viewCellIndex = Movies.IndexOf(movie);
+            if (Movies.Count - itemLoadNextItem <= viewCellIndex)
+            {
+                await NextPageUpcomingMoviesAsync().ConfigureAwait(false);
+            }
+        }
+
+        public async Task NextPageUpcomingMoviesAsync()
+        {
+            currentPage++;
+            if (currentPage <= totalPage)
+            {
+                UpcomingMoviesResponse upcomingMoviesResponse = await this.movieService.UpcomingMovies(currentPage);
+                foreach (var movie in upcomingMoviesResponse.Results)
+                {
+                    Movies.Add(ToMovieItemViewModel(movie));
+                }
             }
         }
 
         public Task OnDisappearing() => Task.CompletedTask;
 
         public MovieItemViewModel ToMovieItemViewModel(Movie result) => new MovieItemViewModel(result);
-
-        private bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value))
-            {
-                return false;
-            }
-
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

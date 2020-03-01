@@ -13,6 +13,9 @@
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
     <PackageReference Include="Refit" Version="5.0.23" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="Prism.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="CardsView" Version="2.4.8" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -22,5 +25,8 @@
     <Folder Include="Utils\" />
     <Folder Include="Views\" />
     <Folder Include="Effects\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Cells\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
 </Project>

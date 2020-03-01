@@ -93,6 +93,8 @@ namespace CodeChallenge.Models
         public DateTimeOffset ReleaseDate { get; set; }
 
         public string Title { get; set; }
+
+        public string OriginalTitle { get; set; }
     }
 
     public class Genre
@@ -100,5 +102,12 @@ namespace CodeChallenge.Models
         public int Id { get; set; }
 
         public string Name { get; set; }
+    }
+
+    public class Image
+    {
+
+        public string FilePath { get; set; }
+
     }
 }

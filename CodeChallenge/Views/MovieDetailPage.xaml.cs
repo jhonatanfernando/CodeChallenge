@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MainPage.xaml.cs" company="ArcTouch LLC">
-//   Copyright 2019 ArcTouch LLC.
+// <copyright file="MovieDetailPage.xaml.cs" company="ArcTouch LLC">
+//   Copyright 2020 ArcTouch LLC.
 //   All rights reserved.
 //
 //   This file, its contents, concepts, methods, behavior, and operation
@@ -11,42 +11,23 @@
 //   the license agreement.
 // </copyright>
 // <summary>
-//   Defines the MainPage type.
+//   Defines the MovieDetailPage.xaml type.
 // </summary>
 //  --------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
 
-using CodeChallenge.Services;
-using CodeChallenge.ViewModels;
 using Xamarin.Forms;
 
 namespace CodeChallenge.Views
 {
-    public partial class HomePage : ContentPage
+    public partial class MovieDetailPage : ContentPage
     {
- 
-        public HomePage()
+
+        public MovieDetailPage()
         {
             InitializeComponent();
-        }
 
-        protected async override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (BindingContext is HomePageViewModel viewModel)
-            {
-                await viewModel.OnAppearing();
-            }
-        }
-
-        protected async override void OnDisappearing()
-        {
-            base.OnDisappearing();
-
-            if (BindingContext is HomePageViewModel viewModel)
-            {
-                await viewModel.OnDisappearing();
-            }
         }
     }
 }

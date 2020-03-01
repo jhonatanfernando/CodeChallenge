@@ -157,6 +157,15 @@
     <PackageReference Include="Prism.DryIoc.Forms">
       <Version>7.2.0.1422</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Forms">
+      <Version>7.2.0.1422</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Forms">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
+    <PackageReference Include="CardsView">
+      <Version>2.4.8</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -167,5 +176,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Effects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <LinkDescription Include="linker.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\placeholder_landscape.png" />
+    <BundleResource Include="Resources\placeholder_portrait.png" />
+    <BundleResource Include="Resources\moviedatabase.png" />
+    <BundleResource Include="Resources\Icon120.png" />
   </ItemGroup>
 </Project>
