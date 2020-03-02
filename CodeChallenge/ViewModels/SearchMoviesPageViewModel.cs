@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HomePageViewModel.cs" company="ArcTouch LLC">
-//   Copyright 2019 ArcTouch LLC.
+// <copyright file="SearchMoviesPageViewModel.cs" company="ArcTouch LLC">
+//   Copyright 2020 ArcTouch LLC.
 //   All rights reserved.
 //
 //   This file, its contents, concepts, methods, behavior, and operation
@@ -11,68 +11,83 @@
 //   the license agreement.
 // </copyright>
 // <summary>
-//   Defines the HomePageViewModel type.
+//   Defines the SearchMoviesPageViewModel type.
 // </summary>
 //  --------------------------------------------------------------------------------------------------------------------
-
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CodeChallenge.Models;
 using CodeChallenge.Services;
-using CodeChallenge.Views;
 using Prism.Commands;
 using Prism.Navigation;
-using Xamarin.Forms;
+using Prism.Services;
 
 namespace CodeChallenge.ViewModels
 {
-    public class HomePageViewModel : BaseViewModel
+    public class SearchMoviesPageViewModel : BaseViewModel
     {
         // Variables to control of the pagination
         private int currentPage = 1;
         private int totalPage = 0;
 
-
         private readonly MovieService movieService = new MovieService();
-        private ObservableCollection<MovieItemViewModel> movies;
 
-        public DelegateCommand ShowSearchMoviesCommand { get; }
+        private string searchTerm;
+        public string SearchTerm
+        {
+            get
+            {
+                return searchTerm;
+            }
+            set
+            {
+                SetProperty(ref searchTerm, value);
+                SearchResults.Clear();
+            }
+        }
+
+        public ObservableCollection<MovieItemViewModel> SearchResults { get; set; }
+
+        public DelegateCommand SearchCommand { get; }
         public DelegateCommand<MovieItemViewModel> ShowMovieDetailCommand { get; }
         public DelegateCommand<MovieItemViewModel> ItemAppearingCommand { get; }
 
-
         private readonly INavigationService navigationService;
-        public HomePageViewModel(INavigationService navigationService)
+        private readonly IPageDialogService pageDialogService;
+        public SearchMoviesPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService)
         {
-            this.movies = new ObservableCollection<MovieItemViewModel>();
+            Title = "Search Movies";
             this.navigationService = navigationService;
+            this.pageDialogService = pageDialogService;
+            SearchResults = new ObservableCollection<MovieItemViewModel>();
 
-            this.Title = "Code Challenge";
-
-            ShowSearchMoviesCommand = new DelegateCommand(async () => await ExecuteShowSearchMoviesCommand().ConfigureAwait(false));
+            SearchCommand = new DelegateCommand(async () => await ExecuteSearchCommand().ConfigureAwait(false));
             ShowMovieDetailCommand = new DelegateCommand<MovieItemViewModel>(async (MovieItemViewModel movie) => await ExecuteShowMovieDetailCommand(movie).ConfigureAwait(false));
             ItemAppearingCommand = new DelegateCommand<MovieItemViewModel>(async (MovieItemViewModel movie) => await ExecuteItemAppearingCommand(movie).ConfigureAwait(false));
         }
 
-        public ObservableCollection<MovieItemViewModel> Movies
+        private async Task ExecuteSearchCommand()
         {
-            get => this.movies;
-            set => SetProperty(ref this.movies, value);
-        }
+            if (IsBusy)
+                return;
 
-        public async Task OnAppearing()
-        {
-            UpcomingMoviesResponse upcomingMoviesResponse = await this.movieService.UpcomingMovies(1);
-
-            totalPage = upcomingMoviesResponse.TotalPages;
-
-            foreach (var movie in upcomingMoviesResponse.Results)
+            IsBusy = true;
+            try
             {
-                Movies.Add(ToMovieItemViewModel(movie));
-            } 
+                SearchResults.Clear();
+                currentPage = 1;
+                await LoadAsync(currentPage).ConfigureAwait(true);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            if (SearchResults.Count == 0)
+            {
+                await pageDialogService.DisplayAlertAsync("The Movie", "No results found.", "Ok").ConfigureAwait(false);
+            }
         }
 
         private async Task ExecuteShowMovieDetailCommand(MovieItemViewModel movie)
@@ -81,35 +96,37 @@ namespace CodeChallenge.ViewModels
             {
                 { nameof(movie), movie }
             };
-
             await navigationService.NavigateAsync("MovieDetailPage", parameters).ConfigureAwait(false);
-        }
-
-        private async Task ExecuteShowSearchMoviesCommand()
-        {
-            await navigationService.NavigateAsync("SearchMoviesPage").ConfigureAwait(false);
         }
 
         private async Task ExecuteItemAppearingCommand(MovieItemViewModel movie)
         {
             int itemLoadNextItem = 2;
-            int viewCellIndex = Movies.IndexOf(movie);
-            if (Movies.Count - itemLoadNextItem <= viewCellIndex)
+            int viewCellIndex = SearchResults.IndexOf(movie);
+            if (SearchResults.Count - itemLoadNextItem <= viewCellIndex)
             {
-                await NextPageUpcomingMoviesAsync().ConfigureAwait(false);
+                await NextPageAsync().ConfigureAwait(false);
             }
         }
 
-        public async Task NextPageUpcomingMoviesAsync()
+        private async Task NextPageAsync()
         {
             currentPage++;
             if (currentPage <= totalPage)
             {
-                UpcomingMoviesResponse upcomingMoviesResponse = await this.movieService.UpcomingMovies(currentPage);
-                foreach (var movie in upcomingMoviesResponse.Results)
-                {
-                    Movies.Add(ToMovieItemViewModel(movie));
-                }
+                await LoadAsync(currentPage).ConfigureAwait(false);
+            }
+        }
+
+        private async Task LoadAsync(int page)
+        {
+            UpcomingMoviesResponse upcomingMoviesResponse = await this.movieService.SearchMovies(searchTerm,page);
+
+            totalPage = upcomingMoviesResponse.TotalPages;
+
+            foreach (var movie in upcomingMoviesResponse.Results)
+            {
+                SearchResults.Add(ToMovieItemViewModel(movie));
             }
         }
 

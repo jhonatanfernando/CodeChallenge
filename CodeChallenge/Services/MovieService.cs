@@ -31,6 +31,8 @@ namespace CodeChallenge.Services
 
         public Task<UpcomingMoviesResponse> UpcomingMovies(int page) => GetApi().UpcomingMovies(Constants.API_KEY, Constants.DEFAULT_LANGUAGE, page, Constants.DEFAULT_REGION);
 
+        public Task<UpcomingMoviesResponse> SearchMovies(string searchTerm, int page) => GetApi().SearchMovies(Constants.API_KEY, searchTerm, Constants.DEFAULT_LANGUAGE, page, Constants.DEFAULT_REGION);
+
         public Task<Movie> GetMovie(int movieId) => GetApi().GetMovie(Constants.API_KEY, Constants.DEFAULT_LANGUAGE, movieId);
 
         private ITmdbApi GetApi()

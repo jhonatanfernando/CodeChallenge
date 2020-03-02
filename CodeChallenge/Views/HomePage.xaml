@@ -4,11 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
     xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:cells="clr-namespace:CodeChallenge.Cells;assembly=CodeChallenge"
     xmlns:converters="clr-namespace:CodeChallenge.Converters;assembly=CodeChallenge"
-    xmlns:views="clr-namespace:CodeChallenge.Views"
     x:Class="CodeChallenge.Views.HomePage"
-    Title="Code Challenge"
     prism:ViewModelLocator.AutowireViewModel="True"
+    Title="{Binding Title}"
     Padding="{x:OnPlatform Android=16, iOS='16,20,16,16'}">
 
     <ContentPage.Resources>
@@ -18,6 +18,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem             
+            AutomationId="Search"            
+            Text="Search"
+            Icon="ic_search_white.png" 
+            Command="{Binding ShowSearchMoviesCommand}"/>
+    </ContentPage.ToolbarItems>
+
 
     <StackLayout>
         <ListView x:Name="lstMovies"
@@ -26,15 +34,15 @@
                 ItemsSource="{Binding Movies}"
                 HasUnevenRows="true"
                 SeparatorVisibility="None"
-                RefreshCommand="{Binding LoadDiscoverMoviesCommand}"
-                IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <views:MovieItemView />
-                </DataTemplate>
-            </ListView.ItemTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <cells:MovieCell/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
 
             <ListView.Behaviors>
                     <behaviors:EventToCommandBehavior 

@@ -34,6 +34,7 @@ namespace CodeChallenge.ViewModels
             Title = movie.Title;
             OriginalTitle = movie.OriginalTitle;
             Overview = movie.Overview;
+            VoteAverage = movie.VoteAverage;
             PosterPath = Utils.MovieImageUrlBuilder.BuildPosterUrl(movie.PosterPath);
             BackdropPath = Utils.MovieImageUrlBuilder.BuildPosterUrl(movie.BackdropPath);
             ReleaseDate = movie.ReleaseDate;
@@ -46,11 +47,13 @@ namespace CodeChallenge.ViewModels
 
         public string Overview { get; set; }
 
+        public float VoteAverage { get; set; }
+
         public string PosterPath { get => this.posterPath; set => SetProperty(ref this.posterPath, value); }
 
         public string BackdropPath { get => this.backdropPath; set => SetProperty(ref this.backdropPath, value); }
 
-        public DateTimeOffset ReleaseDate { get; set; }
+        public DateTimeOffset? ReleaseDate { get; set; }
 
         public string Genres { get; set; }
 

@@ -58,7 +58,7 @@ namespace CodeChallenge
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<HomePage>();
-            //containerRegistry.RegisterForNavigation<SearchMoviesPage>();
+            containerRegistry.RegisterForNavigation<SearchMoviesPage>();
             containerRegistry.RegisterForNavigation<MovieDetailPage>();
         }
 

@@ -96,6 +96,7 @@
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Effects\MultiLineLabelEffect.cs" />
+    <Compile Include="Renderes\CustomFrameRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -176,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Effects\" />
+    <Folder Include="Renderes\" />
   </ItemGroup>
   <ItemGroup>
     <LinkDescription Include="linker.xml" />
@@ -185,5 +187,16 @@
     <BundleResource Include="Resources\placeholder_portrait.png" />
     <BundleResource Include="Resources\moviedatabase.png" />
     <BundleResource Include="Resources\Icon120.png" />
+    <BundleResource Include="Resources\Default-Portrait%402x.png" />
+    <BundleResource Include="Resources\ic_grade_white%402x.png" />
+    <BundleResource Include="Resources\ic_grade_white%403x.png" />
+    <BundleResource Include="Resources\Default-Portrait.png" />
+    <BundleResource Include="Resources\ic_grade_white.png" />
+    <BundleResource Include="Resources\ic_search_white%402x.png" />
+    <BundleResource Include="Resources\ic_search_white%403x.png" />
+    <BundleResource Include="Resources\ic_grade_black%402x.png" />
+    <BundleResource Include="Resources\ic_grade_black%403x.png" />
+    <BundleResource Include="Resources\ic_grade_black.png" />
+    <BundleResource Include="Resources\ic_search_white.png" />
   </ItemGroup>
 </Project>

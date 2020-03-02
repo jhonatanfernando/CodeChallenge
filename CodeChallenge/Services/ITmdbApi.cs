@@ -31,5 +31,8 @@ namespace CodeChallenge.Services
 
         [Get("/movie/{id}?api_key={apiKey}&language={language}")]
         Task<Movie> GetMovie(string apiKey, string language, [AliasAs("id")]int movieId);
+
+        [Get("/search/movie?api_key={apiKey}&query={searchTerm}&language={language}&page={page}&region={region}")]
+        Task<UpcomingMoviesResponse> SearchMovies(string apiKey, string searchTerm, string language, int page, string region);
     }
 }

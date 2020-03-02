@@ -27,7 +27,7 @@ namespace CodeChallenge.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            //Xamarin.Calabash.Start();
+            Xamarin.Calabash.Start();
             global::Xamarin.Forms.Forms.Init();
 
 

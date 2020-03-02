@@ -23,10 +23,15 @@ namespace CodeChallenge.Views
 {
     public partial class HomePage : ContentPage
     {
- 
+
         public HomePage()
         {
             InitializeComponent();
+
+            lstMovies.ItemSelected += (sender, e) =>
+            {
+                ((ListView)sender).SelectedItem = null;
+            };
         }
 
         protected async override void OnAppearing()

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="VideoCell.xaml.cs" company="ArcTouch LLC">
+// <copyright file="SearchMoviesPage.xaml.cs" company="ArcTouch LLC">
 //   Copyright 2020 ArcTouch LLC.
 //   All rights reserved.
 //
@@ -11,18 +11,19 @@
 //   the license agreement.
 // </copyright>
 // <summary>
-//   Defines the VideoCell.xaml type.
+//   Defines the SearchMoviesPage.xaml type.
 // </summary>
 //  --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+
 using Xamarin.Forms;
 
-namespace CodeChallenge.Cells
+namespace CodeChallenge.Views
 {
-    public partial class VideoCell : ContentView
+    public partial class SearchMoviesPage : ContentPage
     {
-        public VideoCell()
+        public SearchMoviesPage()
         {
             InitializeComponent();
         }

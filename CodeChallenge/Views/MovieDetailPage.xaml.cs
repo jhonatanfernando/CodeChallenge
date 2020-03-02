@@ -28,6 +28,7 @@ namespace CodeChallenge.Views
         {
             InitializeComponent();
 
+            NavigationPage.SetBackButtonTitle(this, "Back");
         }
     }
 }
