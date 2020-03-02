@@ -73,7 +73,7 @@ namespace CodeChallenge.Models
 
         public string Overview { get; set; }
 
-        public DateTimeOffset ReleaseDate { get; set; }
+        public DateTimeOffset? ReleaseDate { get; set; }
     }
 
     public class Movie
@@ -90,9 +90,13 @@ namespace CodeChallenge.Models
 
         public string PosterPath { get; set; }
 
-        public DateTimeOffset ReleaseDate { get; set; }
+        public DateTimeOffset? ReleaseDate { get; set; }
 
         public string Title { get; set; }
+
+        public string OriginalTitle { get; set; }
+
+        public float VoteAverage { get; set; }
     }
 
     public class Genre
@@ -100,5 +104,12 @@ namespace CodeChallenge.Models
         public int Id { get; set; }
 
         public string Name { get; set; }
+    }
+
+    public class Image
+    {
+
+        public string FilePath { get; set; }
+
     }
 }

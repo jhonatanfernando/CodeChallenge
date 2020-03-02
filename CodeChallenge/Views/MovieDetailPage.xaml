@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:controls="clr-namespace:CodeChallenge.Controls;assembly=CodeChallenge"
+             xmlns:cells="clr-namespace:CodeChallenge.Cells;assembly=CodeChallenge"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:pancards="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:pancardsControls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:converters="clr-namespace:CodeChallenge.Converters;assembly=CodeChallenge"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="CodeChallenge.Views.MovieDetailPage"
+             BackgroundColor="{DynamicResource WindowBackground}"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ItemTappedEventArgsConverter x:Key="itemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout>
+            <controls:CardView>
+                <StackLayout Spacing="0">
+                    <pancards:CarouselView
+                        ItemsSource="{Binding Backdrops, Mode=OneWay}">
+                        <pancards:CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <ffimageloading:CachedImage
+                                    HeightRequest="200"
+                                    Source="{Binding FilePath}"
+                                    LoadingPlaceholder="placeholder_landscape.png"
+                                    DownsampleToViewSize="True"
+                                    Aspect="AspectFill"/>
+                            </DataTemplate>
+                        </pancards:CarouselView.ItemTemplate>
+                        <pancardsControls:IndicatorsControl/>
+                    </pancards:CarouselView>
+                    <StackLayout Margin="10">
+                        <Label Text="Title" FontSize="Medium" FontAttributes="Bold"/>
+                        <Label x:Name="FavMovieTitleRealOne" AutomationId="LabelTitle" Text="{Binding Movie.Title}" FontSize="Small"/>
+
+                        <Label Text="Original Title" FontSize="Medium" FontAttributes="Bold"/>
+                        <Label Text="{Binding Movie.OriginalTitle}" FontSize="Small"/>
+                    </StackLayout>
+                </StackLayout>
+            </controls:CardView>
+            <controls:CardView>
+                <StackLayout Margin="10">
+                    <Label Text="Release Date" FontSize="Medium" FontAttributes="Bold"/>
+                    <Label Text="{Binding Movie.ReleaseDate, StringFormat='{0:D}'}" FontSize="Small"/>
+
+                    <Label Text="Genres" FontSize="Medium" FontAttributes="Bold"/>
+                    <Label Text="{Binding Movie.Genres, StringFormat='{0:D}'}" FontSize="Small"/>
+                </StackLayout>
+            </controls:CardView>
+            <controls:CardView
+                IsVisible="{Binding Movie.HasOverview, Mode=OneWay}">
+                <StackLayout Margin="10">
+                    <Label Text="Overview" FontSize="Medium" FontAttributes="Bold"/>
+                    <Label Text="{Binding Movie.Overview}" FontSize="Small"/>
+                </StackLayout>
+            </controls:CardView>
+            
+        </StackLayout>
+
+    </ScrollView>
+</ContentPage>

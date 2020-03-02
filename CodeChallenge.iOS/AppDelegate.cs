@@ -15,7 +15,9 @@
 // </summary>
 //  --------------------------------------------------------------------------------------------------------------------
 
+using FFImageLoading.Forms.Platform;
 using Foundation;
+using PanCardView.iOS;
 using UIKit;
 
 namespace CodeChallenge.iOS
@@ -27,6 +29,11 @@ namespace CodeChallenge.iOS
         {
             Xamarin.Calabash.Start();
             global::Xamarin.Forms.Forms.Init();
+
+
+            CachedImageRenderer.Init();
+            CardsViewRenderer.Preserve();
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

@@ -23,12 +23,15 @@ namespace CodeChallenge.Views
 {
     public partial class HomePage : ContentPage
     {
-        private HomePageViewModel homePageViewModel;
+
         public HomePage()
         {
             InitializeComponent();
-            this.homePageViewModel = new HomePageViewModel(new MovieService());
-            BindingContext = this.homePageViewModel;
+
+            lstMovies.ItemSelected += (sender, e) =>
+            {
+                ((ListView)sender).SelectedItem = null;
+            };
         }
 
         protected async override void OnAppearing()

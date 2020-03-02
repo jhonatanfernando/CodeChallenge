@@ -5,4 +5,5 @@
     <color name="primaryLightColor">#ffb444</color>
     <color name="primaryDarkColor">#c55400</color>
     <color name="primaryTextColor">#000000</color>
+    <color name="splash_background">#FFFFFF</color>
 </resources>

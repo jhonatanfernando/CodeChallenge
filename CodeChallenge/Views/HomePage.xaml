@@ -2,23 +2,61 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:CodeChallenge.Views"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:cells="clr-namespace:CodeChallenge.Cells;assembly=CodeChallenge"
+    xmlns:converters="clr-namespace:CodeChallenge.Converters;assembly=CodeChallenge"
     x:Class="CodeChallenge.Views.HomePage"
-    Title="Code Challenge"
+    prism:ViewModelLocator.AutowireViewModel="True"
+    Title="{Binding Title}"
     Padding="{x:OnPlatform Android=16, iOS='16,20,16,16'}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ItemTappedEventArgsConverter x:Key="itemTappedEventArgsConverter" />
+            <converters:ItemVisibilityEventArgsConverter x:Key="itemAppearingEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem             
+            AutomationId="Search"            
+            Text="Search"
+            Icon="ic_search_white.png" 
+            Command="{Binding ShowSearchMoviesCommand}"/>
+    </ContentPage.ToolbarItems>
+
+
     <StackLayout>
-        <ListView
-            ItemsSource="{Binding Movies}"
-            HasUnevenRows="true"
-            SelectionMode="None"
-            VerticalScrollBarVisibility="Never"
-            HorizontalScrollBarVisibility="Never"
-            SeparatorVisibility="None">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <views:MovieItemView />
-                </DataTemplate>
-            </ListView.ItemTemplate>
+        <ListView x:Name="lstMovies"
+            BackgroundColor="{DynamicResource WindowBackground}"
+                IsVisible="{Binding IsConnected}"
+                ItemsSource="{Binding Movies}"
+                HasUnevenRows="true"
+                SeparatorVisibility="None"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <cells:MovieCell/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior 
+                        EventName="ItemTapped"
+                        BindingContext="{Binding Source={x:Reference lstMovies}, Path=BindingContext}"
+                        Command="{Binding ShowMovieDetailCommand}"
+                        EventArgsConverter="{StaticResource itemTappedEventArgsConverter}" />
+                    <behaviors:EventToCommandBehavior
+                        EventName="ItemAppearing"
+                        BindingContext="{Binding Source={x:Reference lstMovies}, Path=BindingContext}"
+                        Command="{Binding ItemAppearingCommand}"
+                        EventArgsConverter="{StaticResource itemAppearingEventArgsConverter}" />
+                </ListView.Behaviors>
+
         </ListView>
     </StackLayout>
 </ContentPage>
